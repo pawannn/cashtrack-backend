@@ -49,7 +49,8 @@ func (cE *CashTrackEngine) AddRoutes(routes []CashTrackRoutes) {
 }
 
 func (cE *CashTrackEngine) StartServer() error {
-	if err := cE.httpEngine.Run(); err != nil {
+	address := fmt.Sprintf(":%d", cE.Config.Port)
+	if err := cE.httpEngine.Run(address); err != nil {
 		return err
 	}
 	return nil

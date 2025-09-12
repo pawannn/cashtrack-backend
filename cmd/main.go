@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/pawannn/cashtrack/internal/pkg/config"
+	"github.com/pawannn/cashtrack/internal/pkg/http"
 )
 
 func main() {
@@ -12,5 +12,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to load config, %s", err.Error())
 	}
-	fmt.Printf("%+v", cfg)
+	server := http.InitCashtrackEngine(cfg)
+	if err := server.StartServer(); err != nil {
+		log.Fatal("Unable to start server", err)
+	}
 }
