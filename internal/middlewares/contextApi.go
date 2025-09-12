@@ -1,24 +1,23 @@
 package middlewares
 
 import (
-	"context"
 	"fmt"
+
+	"github.com/gin-gonic/gin"
 )
 
-type ContextType string
-
-var ContextKey ContextType = "CashTrackContext"
+var ContextKey string = "CashTrackContext"
 
 type ApiContext struct {
+	ReqID  string `json:"req_id"`
 	UserID string `json:"userID"`
 }
 
-func AttachContext(ctx context.Context, contextData ApiContext) context.Context {
-	c := context.WithValue(ctx, ContextKey, contextData)
-	return c
+func AttachContext(ctx *gin.Context, contextData ApiContext) {
+	ctx.Set(ContextKey, contextData)
 }
 
-func ParseContext(ctx context.Context) (*ApiContext, error) {
+func ParseContext(ctx *gin.Context) (*ApiContext, error) {
 	contextData, ok := ctx.Value(ContextKey).(ApiContext)
 	if !ok {
 		return nil, fmt.Errorf("unable to get data from the given contect")
