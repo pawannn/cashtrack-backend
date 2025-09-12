@@ -4,6 +4,7 @@ go 1.25.1
 
 require (
 	github.com/gin-gonic/gin v1.10.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/spf13/viper v1.21.0
 )

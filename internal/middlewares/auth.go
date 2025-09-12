@@ -25,7 +25,7 @@ func (mS MiddlewareService) AuthUser(c *gin.Context) {
 
 	apiContext := ApiContext{
 		ReqID:  reqID,
-		UserID: *userID,
+		UserID: userID,
 	}
 	AttachContext(c, apiContext)
 
