@@ -8,17 +8,17 @@ import (
 	"github.com/pawannn/cashtrack/internal/ports"
 )
 
-type AuthService struct {
+type JWTService struct {
 	secretKey string
 }
 
-func InitAuthService(cfg *config.CashTrackCfg) ports.AuthRepo {
-	return AuthService{
+func InitJWTService(cfg *config.CashTrackCfg) ports.AuthRepo {
+	return JWTService{
 		secretKey: cfg.AuthTokenSecret,
 	}
 }
 
-func (aS AuthService) GenerateUserToken(userID string) (string, error) {
+func (aS JWTService) GenerateUserToken(userID string) (string, error) {
 	claims := jwt.MapClaims{
 		"userID": userID,
 	}
@@ -26,7 +26,7 @@ func (aS AuthService) GenerateUserToken(userID string) (string, error) {
 	return token.SignedString(aS.secretKey)
 }
 
-func (aS AuthService) ParseUserToken(token string) (string, error) {
+func (aS JWTService) ParseUserToken(token string) (string, error) {
 	parsedToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
