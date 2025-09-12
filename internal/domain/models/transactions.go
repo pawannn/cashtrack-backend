@@ -13,3 +13,9 @@ type Transaction struct {
 	Created_at    time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 }
+
+type CategoryStat struct {
+	CategoryID   string  `json:"category_id"`
+	CategoryName string  `json:"category_name"`
+	TotalAmount  float64 `json:"total_amount"`
+}

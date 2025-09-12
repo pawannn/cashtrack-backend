@@ -8,8 +8,8 @@ import (
 
 type TransactionRepo interface {
 	Record(tx models.Transaction) (*models.Transaction, error)
-	FilterUserTransactions(userID string, from time.Time, to time.Time) ([]models.Transaction, error)
-	GetByID(txID string) (*models.Transaction, error)
 	Update(tx *models.Transaction) (*models.Transaction, error)
 	Delete(txID string) error
+	FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, error)
+	UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, error)
 }

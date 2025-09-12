@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/pawannn/cashtrack/internal/config"
+	"github.com/pawannn/cashtrack/internal/pkg/config"
 )
 
 func main() {

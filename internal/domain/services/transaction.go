@@ -29,12 +29,12 @@ func (tS *TransactionService) Record(tx models.Transaction) (*models.Transaction
 	return tS.TxRepo.Record(tx)
 }
 
-func (tS *TransactionService) FilterUserTransactions(userID string, from time.Time, to time.Time) ([]models.Transaction, error) {
+func (tS *TransactionService) FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, error) {
 	return tS.TxRepo.FilterUserTransactions(userID, from, to)
 }
 
-func (tS *TransactionService) GetByID(txID string) (*models.Transaction, error) {
-	return tS.TxRepo.GetByID(txID)
+func (tS *TransactionService) UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, error) {
+	return tS.TxRepo.UserStats(userID, from, to)
 }
 
 func (tS *TransactionService) Update(tx *models.Transaction) (*models.Transaction, error) {
