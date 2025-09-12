@@ -7,6 +7,7 @@ type User struct {
 	Phone      string    `json:"phone_number"`
 	Name       string    `json:"name"`
 	Currency   string    `json:"currency"`
+	Country    string    `json:"country"`
 	IsVerified bool      `json:"is_verified"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
