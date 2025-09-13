@@ -2,6 +2,6 @@ package user
 
 import "github.com/pawannn/cashtrack/internal/domain/models"
 
-func (uA *UserApp) Update(userDetails *models.User) (*models.User, error) {
+func (uA *UserApp) Create(userDetails *models.User) (*models.User, error) {
 	return nil, nil
 }
