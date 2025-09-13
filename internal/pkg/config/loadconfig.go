@@ -11,9 +11,9 @@ type CashTrackCfg struct {
 	DBPass          string `mapstructure:"DB_PASS"`
 	DBSsl           string `mapstructure:"DB_SSL"`
 	CacheHost       string `mapstructure:"CACHEDB_HOST"`
-	CachePort       string `mapstructure:"CACHEDB_PORT"`
+	CachePort       int    `mapstructure:"CACHEDB_PORT"`
 	CachePass       string `mapstructure:"CACHEDB_PASS"`
-	CacheDB         string `mapstructure:"CACHEDB_DB"`
+	CacheDB         int    `mapstructure:"CACHEDB_DB"`
 	AuthTokenSecret string `mapstructure:"TOKEN_SECRET"`
 	SMSServiceID    string `mapstructure:"SMS_SERVICE_ID"`
 	SMSAccountSID   string `mapstructure:"SMS_ACCOUNT_SID"`
