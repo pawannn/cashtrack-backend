@@ -27,24 +27,27 @@ func InitCashtrackEngine(cfg *config.CashTrackCfg) *CashTrackEngine {
 	}
 }
 
-func (cE *CashTrackEngine) AddRoutes(routes []CashTrackRoutes) {
+func (cE *CashTrackEngine) AddV1Routes(routes []CashTrackRoutes) {
 	for _, route := range routes {
 		handlers := append(route.MiddleWares, route.Handler)
+		routePath := "/cashtrack/v0" + route.Path
 		switch route.Method {
 		case "GET":
-			cE.httpEngine.GET(route.Path, handlers...)
+			cE.httpEngine.GET(routePath, handlers...)
 		case "POST":
-			cE.httpEngine.POST(route.Path, handlers...)
+			cE.httpEngine.POST(routePath, handlers...)
 		case "PUT":
-			cE.httpEngine.PUT(route.Path, handlers...)
+			cE.httpEngine.PUT(routePath, handlers...)
 		case "PATCH":
-			cE.httpEngine.PATCH(route.Path, handlers...)
+			cE.httpEngine.PATCH(routePath, handlers...)
 		case "DELETE":
-			cE.httpEngine.DELETE(route.Path, handlers...)
+			cE.httpEngine.DELETE(routePath, handlers...)
 		default:
 			fmt.Println("Invalid route method : ", route.Method)
 			continue
 		}
+
+		fmt.Printf("%s : %s : %s\n", route.Method, routePath, route.Description)
 	}
 }
 

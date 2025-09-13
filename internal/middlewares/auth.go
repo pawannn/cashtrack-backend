@@ -17,8 +17,8 @@ func (mS MiddlewareService) AuthUser(c *gin.Context) {
 		return
 	}
 	userID, err := mS.auth.ParseUserToken(authroization)
-	if err != nil {
-		cashTrackHttp.SendResponse(c, reqID, http.StatusUnauthorized, "Invalid Authprization", nil)
+	if err != utils.NoErr {
+		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
 		c.Abort()
 		return
 	}

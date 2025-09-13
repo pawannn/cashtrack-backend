@@ -1,7 +1,7 @@
 package services
 
 import (
-	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/pawannn/cashtrack/internal/domain/models"
@@ -13,29 +13,38 @@ type UserService struct {
 	UserRepo ports.UserRepo
 }
 
+func (uS *UserService) GetUserByID(id string) (*models.User, utils.CashTrackError) {
+	return uS.UserRepo.GetUserByID(id)
+}
+
 func InitUserService(userRepo ports.UserRepo) *UserService {
 	return &UserService{
 		UserRepo: userRepo,
 	}
 }
 
-func (uS *UserService) ValidatePhone(phone string) error {
-	return uS.UserRepo.ValidatePhone(phone)
+func (uS *UserService) ValidatePhone(phone string, country string) utils.CashTrackError {
+	return uS.UserRepo.ValidatePhone(phone, country)
 }
 
-func (uS *UserService) VerifyPhone(userDetails *models.User, OTP string) (*models.User, error) {
-	ok, err := uS.UserRepo.VerifyPhone(userDetails.Phone, OTP)
-	if err != nil {
+func (uS *UserService) VerifyPhone(userDetails *models.User, OTP string) (*models.User, utils.CashTrackError) {
+	ok, err := uS.UserRepo.VerifyPhone(userDetails.Phone, userDetails.Country, OTP)
+	if err != utils.NoErr {
 		return nil, err
 	}
 	if !ok {
-		return nil, fmt.Errorf("invalid otp")
+		return nil, utils.CashTrackError{
+			Code:    http.StatusUnauthorized,
+			Message: "Invalid OPT",
+			Error:   nil,
+		}
 	}
 
 	user, err := uS.UserRepo.GetUserByPhone(userDetails.Phone)
-	if err != nil {
+	if err != utils.NoErr {
 		return nil, err
 	}
+
 	if user != nil {
 		return user, err
 	}
@@ -46,18 +55,14 @@ func (uS *UserService) VerifyPhone(userDetails *models.User, OTP string) (*model
 	userDetails.UpdatedAt = time.Now()
 
 	user, err = uS.UserRepo.Create(userDetails)
-	if err != nil {
+	if err != utils.NoErr {
 		return nil, err
 	}
 
-	return user, nil
+	return user, utils.NoErr
 }
 
-func (uS *UserService) UpdateUser(userData *models.User) (*models.User, error) {
+func (uS *UserService) UpdateUser(userData *models.User) (*models.User, utils.CashTrackError) {
 	userData.UpdatedAt = time.Now()
 	return uS.UserRepo.Update(userData)
-}
-
-func (uS *UserService) GetUserByID(id string) (*models.User, error) {
-	return uS.UserRepo.GetUserByID(id)
 }

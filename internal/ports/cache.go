@@ -1,10 +1,13 @@
 package ports
 
-import "github.com/pawannn/cashtrack/internal/domain/models"
+import (
+	"github.com/pawannn/cashtrack/internal/domain/models"
+	"github.com/pawannn/cashtrack/internal/utils"
+)
 
 type CacheRepo interface {
-	GetUserInfo(userID string) (*models.User, error)
-	StoreUserInfo(userDetails models.User) error
-	GetCategories() ([]models.Category, error)
-	SetCategories(categories []models.Category) error
+	GetUserInfo(userID string) (*models.User, utils.CashTrackError)
+	StoreUserInfo(userDetails models.User) utils.CashTrackError
+	GetCategories() ([]models.Category, utils.CashTrackError)
+	SetCategories(categories []models.Category) utils.CashTrackError
 }

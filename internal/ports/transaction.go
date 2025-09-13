@@ -4,12 +4,13 @@ import (
 	"time"
 
 	"github.com/pawannn/cashtrack/internal/domain/models"
+	"github.com/pawannn/cashtrack/internal/utils"
 )
 
 type TransactionRepo interface {
-	Record(tx models.Transaction) (*models.Transaction, error)
-	Update(tx *models.Transaction) (*models.Transaction, error)
-	Delete(txID string) error
-	FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, error)
-	UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, error)
+	Record(tx models.Transaction) (*models.Transaction, utils.CashTrackError)
+	Update(tx *models.Transaction) (*models.Transaction, utils.CashTrackError)
+	Delete(txID string) utils.CashTrackError
+	FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, utils.CashTrackError)
+	UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, utils.CashTrackError)
 }

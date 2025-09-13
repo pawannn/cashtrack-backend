@@ -12,7 +12,7 @@ type RedisService struct {
 	rClient *redis.Client
 }
 
-func InitRedisService(config config.CashTrackCfg) ports.CacheRepo {
+func InitRedisService(config *config.CashTrackCfg) ports.CacheRepo {
 	addr := fmt.Sprintf("%s:%d", config.CacheHost, config.CachePort)
 	redisClient := redis.NewClient(&redis.Options{
 		DB:       config.CacheDB,

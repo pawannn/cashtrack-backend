@@ -1,7 +1,6 @@
 package services
 
 import (
-	"errors"
 	"time"
 
 	"github.com/pawannn/cashtrack/internal/domain/models"
@@ -19,29 +18,26 @@ func InitNewTransactionRepo(txRepo ports.TransactionRepo) *TransactionService {
 	}
 }
 
-func (tS *TransactionService) Record(tx models.Transaction) (*models.Transaction, error) {
-	if tx.Amount == 0 {
-		return nil, errors.New("amount cannot be zero")
-	}
+func (tS *TransactionService) Record(tx models.Transaction) (*models.Transaction, utils.CashTrackError) {
 	tx.Id = utils.NewUUID()
 	tx.Created_at = time.Now()
 	tx.UpdatedAt = time.Now()
 	return tS.TxRepo.Record(tx)
 }
 
-func (tS *TransactionService) FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, error) {
+func (tS *TransactionService) FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, utils.CashTrackError) {
 	return tS.TxRepo.FilterUserTransactions(userID, from, to)
 }
 
-func (tS *TransactionService) UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, error) {
+func (tS *TransactionService) UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, utils.CashTrackError) {
 	return tS.TxRepo.UserStats(userID, from, to)
 }
 
-func (tS *TransactionService) Update(tx *models.Transaction) (*models.Transaction, error) {
+func (tS *TransactionService) Update(tx *models.Transaction) (*models.Transaction, utils.CashTrackError) {
 	tx.UpdatedAt = time.Now()
 	return tS.TxRepo.Update(tx)
 }
 
-func (tS *TransactionService) Delete(txID string) error {
+func (tS *TransactionService) Delete(txID string) utils.CashTrackError {
 	return tS.TxRepo.Delete(txID)
 }

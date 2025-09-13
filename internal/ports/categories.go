@@ -1,11 +1,14 @@
 package ports
 
-import "github.com/pawannn/cashtrack/internal/domain/models"
+import (
+	"github.com/pawannn/cashtrack/internal/domain/models"
+	"github.com/pawannn/cashtrack/internal/utils"
+)
 
 type CategoriesRepo interface {
-	GetCategories() ([]models.Category, error)
-	GetByID(cid string) (*models.Category, error)
-	Create(category models.Category) (*models.Category, error)
-	Update(category models.Category) (*models.Category, error)
-	Delete(cid string) error
+	GetCategories() ([]models.Category, utils.CashTrackError)
+	GetByID(cid string) (*models.Category, utils.CashTrackError)
+	Create(category models.Category) (*models.Category, utils.CashTrackError)
+	Update(category models.Category) (*models.Category, utils.CashTrackError)
+	Delete(cid string) utils.CashTrackError
 }
