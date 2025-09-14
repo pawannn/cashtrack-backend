@@ -1,6 +1,29 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"fmt"
+
+	"github.com/spf13/viper"
+)
+
+var (
+	Env             = "dev"
+	AppPort         = "8080"
+	DBName          = ""
+	DBHost          = ""
+	DBPort          = "5432"
+	DBUser          = ""
+	DBPass          = ""
+	DBSsl           = "disable"
+	CacheHost       = "localhost"
+	CachePort       = "6379"
+	CachePass       = ""
+	CacheDB         = "0"
+	AuthTokenSecret = ""
+	SMSServiceID    = ""
+	SMSAccountSID   = ""
+	SMSServiceToken = ""
+)
 
 type CashTrackCfg struct {
 	ENV             string `mapstructure:"ENV"`
@@ -22,7 +45,29 @@ type CashTrackCfg struct {
 }
 
 func LoadConfig() (*CashTrackCfg, error) {
-	var newCfg CashTrackCfg
+	// If running in production, use embedded values
+	if Env == "prod" || Env == "production" {
+		fmt.Println("Using embedded production configuration")
+		return &CashTrackCfg{
+			ENV:             Env,
+			Port:            mustAtoi(AppPort),
+			DBName:          DBName,
+			DBHost:          DBHost,
+			DBPort:          mustAtoi(DBPort),
+			DBUser:          DBUser,
+			DBPass:          DBPass,
+			DBSsl:           DBSsl,
+			CacheHost:       CacheHost,
+			CachePort:       mustAtoi(CachePort),
+			CachePass:       CachePass,
+			CacheDB:         mustAtoi(CacheDB),
+			AuthTokenSecret: AuthTokenSecret,
+			SMSServiceID:    SMSServiceID,
+			SMSAccountSID:   SMSAccountSID,
+			SMSServiceToken: SMSServiceToken,
+		}, nil
+	}
+
 	viper.SetConfigType("env")
 	viper.SetConfigFile(".env")
 
@@ -30,9 +75,16 @@ func LoadConfig() (*CashTrackCfg, error) {
 		return nil, err
 	}
 
+	var newCfg CashTrackCfg
 	if err := viper.Unmarshal(&newCfg); err != nil {
 		return nil, err
 	}
 
 	return &newCfg, nil
+}
+
+func mustAtoi(s string) int {
+	var n int
+	fmt.Sscanf(s, "%d", &n)
+	return n
 }
