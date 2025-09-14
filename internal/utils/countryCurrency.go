@@ -7,23 +7,28 @@ func GetCurrency(country string) string {
 	return "USD"
 }
 
+func CheckCountry(county string) bool {
+	_, exist := countryCurrency[county]
+	return exist
+}
+
 var countryCurrency = map[string]string{
-	"ARE": "AED",
-	"AUS": "AUD",
-	"BRA": "BRL",
-	"CAN": "CAD",
-	"CHN": "CNY",
-	"DEU": "EUR",
-	"ESP": "EUR",
-	"FRA": "EUR",
-	"GBR": "GBP",
-	"IND": "INR",
-	"ITA": "EUR",
-	"JPN": "JPY",
-	"KOR": "KRW",
-	"MEX": "MXN",
-	"RUS": "RUB",
-	"SAU": "SAR",
-	"USA": "USD",
-	"ZAF": "ZAR",
+	"AE": "AED", // United Arab Emirates
+	"AU": "AUD", // Australia
+	"BR": "BRL", // Brazil
+	"CA": "CAD", // Canada
+	"CN": "CNY", // China
+	"DE": "EUR", // Germany
+	"ES": "EUR", // Spain
+	"FR": "EUR", // France
+	"GB": "GBP", // United Kingdom
+	"IN": "INR", // India
+	"IT": "EUR", // Italy
+	"JP": "JPY", // Japan
+	"KR": "KRW", // South Korea
+	"MX": "MXN", // Mexico
+	"RU": "RUB", // Russia
+	"SA": "SAR", // Saudi Arabia
+	"US": "USD", // United States
+	"ZA": "ZAR", // South Africa
 }

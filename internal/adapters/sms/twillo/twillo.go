@@ -12,6 +12,7 @@ import (
 )
 
 type TwilloService struct {
+	Env       string
 	Client    *twilio.RestClient
 	ServiceID string
 }
@@ -22,12 +23,17 @@ func InitTwilloClient(c *config.CashTrackCfg) ports.SMSRepo {
 		Password: c.SMSServiceToken,
 	})
 	return TwilloService{
+		Env:       c.ENV,
 		Client:    client,
 		ServiceID: c.SMSServiceID,
 	}
 }
 
 func (tR TwilloService) SendOTP(phoneNumber string) utils.CashTrackError {
+	if tR.Env != "PROD" {
+		return utils.NoErr
+	}
+
 	params := &verify.CreateVerificationParams{}
 	params.SetTo(phoneNumber)
 	params.SetChannel("sms")
@@ -49,6 +55,10 @@ func (tR TwilloService) SendOTP(phoneNumber string) utils.CashTrackError {
 }
 
 func (tR TwilloService) VerifyOTP(phoneNumber string, code string) utils.CashTrackError {
+	if tR.Env != "PROD" {
+		return utils.NoErr
+	}
+
 	params := &verify.CreateVerificationCheckParams{}
 	params.SetTo(phoneNumber)
 	params.SetCode(code)

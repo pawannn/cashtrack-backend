@@ -20,21 +20,34 @@ func main() {
 		log.Fatalf("Unable to load config, %s", err.Error())
 	}
 
-	server := http.InitCashtrackEngine(cfg)
-
+	// Initialize adaptors
+	// Initialize cache service
 	cacheRepo := cache.InitRedisService(cfg)
+
+	// Initialize SMS Service
 	smsRepo := sms.InitTwilloClient(cfg)
+
+	// Initialize Auth Service
 	authRepo := auth.InitJWTService(cfg)
+
+	// Initialize Database service
 	dbRepo, err := database.InitPGService(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Initialize HTTP Engine
+	server := http.InitCashtrackEngine(cfg, authRepo)
+
+	// Initialize user Service and Api
 	userRepo := useApp.InitUserApp(dbRepo, cacheRepo, smsRepo)
 	userService := services.InitUserService(userRepo)
-	userApi := user.InitUserApi(server, userService, &authRepo)
+	userApi := user.InitUserApi(server, userService)
+
+	// Add User Reoutes to server
 	userApi.AddRoutes()
 
+	// Start the server
 	if err := server.StartServer(); err != nil {
 		log.Fatal("Unable to start server", err)
 	}

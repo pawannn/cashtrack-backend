@@ -1,6 +1,9 @@
 package http
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/pawannn/cashtrack/internal/utils"
+)
 
 type ApiResponse struct {
 	ReqId   string `json:"reqId"`
@@ -10,6 +13,9 @@ type ApiResponse struct {
 }
 
 func SendResponse(c *gin.Context, reqID string, status int, message string, data any) {
+	if reqID == "" {
+		reqID = utils.NewUUID()
+	}
 	newApiResponse := ApiResponse{
 		ReqId:   reqID,
 		Code:    status,

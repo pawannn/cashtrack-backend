@@ -3,6 +3,7 @@ package config
 import "github.com/spf13/viper"
 
 type CashTrackCfg struct {
+	ENV             string `mapstructure:"ENV"`
 	Port            int    `mapstructure:"APP_PORT"`
 	DBName          string `mapstructure:"DB_NAME"`
 	DBHost          string `mapstructure:"DB_HOST"`

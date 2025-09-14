@@ -39,7 +39,7 @@ func (rS *RedisService) GetCategories() ([]models.Category, utils.CashTrackError
 	return categories, utils.NoErr
 }
 
-func (rS *RedisService) SetCategories(categories []models.Category) utils.CashTrackError {
+func (rS *RedisService) StoreCategories(categories []models.Category) utils.CashTrackError {
 	ctx := context.Background()
 
 	data, err := json.Marshal(categories)

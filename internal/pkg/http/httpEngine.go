@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/pawannn/cashtrack/internal/pkg/config"
+	"github.com/pawannn/cashtrack/internal/ports"
 )
 
 type CashTrackRoutes struct {
@@ -18,12 +19,14 @@ type CashTrackRoutes struct {
 type CashTrackEngine struct {
 	httpEngine *gin.Engine
 	Config     *config.CashTrackCfg
+	AuthRepo   ports.AuthRepo
 }
 
-func InitCashtrackEngine(cfg *config.CashTrackCfg) *CashTrackEngine {
+func InitCashtrackEngine(cfg *config.CashTrackCfg, authRepo ports.AuthRepo) *CashTrackEngine {
 	return &CashTrackEngine{
 		httpEngine: gin.Default(),
 		Config:     cfg,
+		AuthRepo:   authRepo,
 	}
 }
 
