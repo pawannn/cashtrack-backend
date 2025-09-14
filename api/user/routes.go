@@ -29,6 +29,24 @@ func InitUserApi(ctEngine *http.CashTrackEngine, userService *services.UserServi
 func (uA UserApi) AddRoutes() {
 	uA.cashtrackEngine.AddV1Routes([]http.CashTrackRoutes{
 		{
+			Method:  "GET",
+			Path:    "/users",
+			Handler: uA.GetUser,
+			MiddleWares: []gin.HandlerFunc{
+				uA.Middlware.AuthUser,
+			},
+			Description: "This endpoint gets details of the user",
+		},
+		{
+			Method:  "PATCH",
+			Path:    "/users",
+			Handler: uA.UpdateUser,
+			MiddleWares: []gin.HandlerFunc{
+				uA.Middlware.AuthUser,
+			},
+			Description: "This endpoint gets details of the user",
+		},
+		{
 			Method:      "POST",
 			Path:        "/users/validate/phone",
 			Handler:     uA.ValidatePhone,
@@ -41,15 +59,6 @@ func (uA UserApi) AddRoutes() {
 			Handler:     uA.VerifyPhone,
 			MiddleWares: []gin.HandlerFunc{},
 			Description: "This enpoint validates the OTP and save user details",
-		},
-		{
-			Method:  "GET",
-			Path:    "/users/:id",
-			Handler: uA.GetUser,
-			MiddleWares: []gin.HandlerFunc{
-				uA.Middlware.AuthUser,
-			},
-			Description: "This endpoint gets details of the user",
 		},
 	})
 }

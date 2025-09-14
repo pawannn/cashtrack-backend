@@ -37,7 +37,7 @@ func (uA *UserApp) VerifyPhone(phone string, country string, OTP string) (bool, 
 	}
 	if !sent {
 		return false, utils.CashTrackError{
-			Code:    404,
+			Code:    http.StatusNotFound,
 			Message: "The OTP for the given number has expired or not sent",
 			Error:   nil,
 		}

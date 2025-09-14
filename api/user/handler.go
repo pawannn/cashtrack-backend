@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,23 @@ import (
 	"github.com/pawannn/cashtrack/internal/pkg/http/payloads"
 	"github.com/pawannn/cashtrack/internal/utils"
 )
+
+func (uA *UserApi) GetUser(c *gin.Context) {
+	contextApi, err := middlewares.ParseContext(c)
+	if err != utils.NoErr {
+		cashTrackHttp.SendResponse(c, utils.NewUUID(), err.Code, err.Message, err.Error)
+		return
+	}
+	reqID := contextApi.ReqID
+	userID := contextApi.UserID
+
+	user, err := uA.userService.GetUserByID(userID)
+	if err != utils.NoErr {
+		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
+		return
+	}
+	cashTrackHttp.SendResponse(c, reqID, http.StatusOK, "Fetched user details successfully", user)
+}
 
 func (uA *UserApi) ValidatePhone(c *gin.Context) {
 	reqID := utils.NewUUID()
@@ -35,6 +53,12 @@ func (uA *UserApi) VerifyPhone(c *gin.Context) {
 		return
 	}
 
+	err := utils.ValidateUserName(payload.Name)
+	if err != utils.NoErr {
+		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
+		return
+	}
+
 	currency := utils.GetCurrency(payload.Country)
 	payload.Currency = currency
 
@@ -43,6 +67,7 @@ func (uA *UserApi) VerifyPhone(c *gin.Context) {
 		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
 		return
 	}
+	fmt.Println(user)
 
 	token, err := uA.cashtrackEngine.AuthRepo.GenerateUserToken(user.Id)
 	if err != utils.NoErr {
@@ -57,19 +82,31 @@ func (uA *UserApi) VerifyPhone(c *gin.Context) {
 	cashTrackHttp.SendResponse(c, reqID, http.StatusOK, "Phone verified succesfully", response)
 }
 
-func (uA *UserApi) GetUser(c *gin.Context) {
+func (uA *UserApi) UpdateUser(c *gin.Context) {
 	contextApi, err := middlewares.ParseContext(c)
 	if err != utils.NoErr {
-		cashTrackHttp.SendResponse(c, "", err.Code, err.Message, err.Error)
+		cashTrackHttp.SendResponse(c, utils.NewUUID(), err.Code, err.Message, err.Error)
 		return
 	}
 	reqID := contextApi.ReqID
 	userID := contextApi.UserID
+	var userDetails models.User
+	if err := c.BindJSON(&userDetails); err != nil {
+		cashTrackHttp.SendResponse(c, reqID, http.StatusInternalServerError, "Unable to read payload", err.Error())
+		return
+	}
 
-	user, err := uA.userService.GetUserByID(userID)
+	userDetails.Id = userID
+	err = utils.ValidateUserName(userDetails.Name)
 	if err != utils.NoErr {
 		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
 		return
 	}
-	cashTrackHttp.SendResponse(c, reqID, http.StatusOK, "Fetched user details successfully", user)
+
+	user, err := uA.userService.UpdateUser(&userDetails)
+	if err != utils.NoErr {
+		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
+		return
+	}
+	cashTrackHttp.SendResponse(c, reqID, http.StatusOK, "Update user details successfully", user)
 }

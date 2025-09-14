@@ -11,12 +11,13 @@ import (
 )
 
 type JWTService struct {
-	secretKey string
+	secretKey []byte
 }
 
 func InitJWTService(cfg *config.CashTrackCfg) ports.AuthRepo {
+	tokenSecret := []byte(cfg.AuthTokenSecret)
 	return JWTService{
-		secretKey: cfg.AuthTokenSecret,
+		secretKey: tokenSecret,
 	}
 }
 
@@ -26,7 +27,9 @@ func (aS JWTService) GenerateUserToken(userID string) (string, utils.CashTrackEr
 	}
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := jwtToken.SignedString(aS.secretKey)
+	fmt.Println(aS.secretKey)
 	if err != nil {
+		fmt.Println(err)
 		return "", utils.CashTrackError{
 			Code:    http.StatusInternalServerError,
 			Message: "Unable to generate token",

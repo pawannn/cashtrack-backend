@@ -6,9 +6,18 @@ import (
 )
 
 func (uA *UserApp) GetUserByID(id string) (*models.User, utils.CashTrackError) {
-	return nil, utils.NoErr
+	user, err := uA.databaseRepo.GetUserByID(id)
+	if err != utils.NoErr {
+		return nil, err
+	}
+	return user, utils.NoErr
 }
 
 func (uA *UserApp) GetUserByPhone(phone string) (*models.User, utils.CashTrackError) {
-	return nil, utils.NoErr
+	user, err := uA.databaseRepo.GetUserByPhone(phone)
+	if err != utils.NoErr {
+		return nil, err
+	}
+
+	return user, utils.NoErr
 }

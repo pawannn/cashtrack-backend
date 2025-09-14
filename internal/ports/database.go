@@ -8,9 +8,9 @@ import (
 type DatabaseRepo interface {
 	// --- User operations ---
 	CreateUser(user models.User) (*models.User, utils.CashTrackError)
-	// UpdateUser(user models.User) (*models.User, utils.CashTrackError)
-	// GetUserByID(userID string) (*models.User, utils.CashTrackError)
-	// GetUserByPhone(phone string) (*models.User, utils.CashTrackError)
+	GetUserByID(userID string) (*models.User, utils.CashTrackError)
+	GetUserByPhone(phone string) (*models.User, utils.CashTrackError)
+	UpdateUser(user *models.User) (*models.User, utils.CashTrackError)
 
 	// // --- Transaction operations ---
 	// RecordTransaction(transaction models.Transaction) (*models.Transaction, utils.CashTrackError)

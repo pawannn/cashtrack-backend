@@ -1,0 +1,8 @@
+package utils
+
+const ERR_INVALID_BODY = "invalid request body"
+const ERR_USER_EXIST = "user already registered"
+const ERR_INVALID_PHONE = "izwnvalid phone number for the specified country"
+const ERR_INVALID_COUNTRY_CODE = "invalid country code"
+const ERR_FETCH_USER = "Unable to fetch user details"
+const ERR_NO_ROWS = "sql: no rows in result set"

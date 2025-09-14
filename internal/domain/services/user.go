@@ -1,8 +1,8 @@
 package services
 
 import (
+	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/pawannn/cashtrack/internal/domain/models"
 	"github.com/pawannn/cashtrack/internal/ports"
@@ -45,14 +45,13 @@ func (uS *UserService) VerifyPhone(userDetails *models.User, OTP string) (*model
 		return nil, err
 	}
 
+	fmt.Println(user)
+
 	if user != nil {
 		return user, err
 	}
 
-	userDetails.Id = utils.NewUUID()
 	userDetails.IsVerified = true
-	userDetails.CreatedAt = time.Now()
-	userDetails.UpdatedAt = time.Now()
 
 	user, err = uS.UserRepo.Create(userDetails)
 	if err != utils.NoErr {
@@ -63,6 +62,5 @@ func (uS *UserService) VerifyPhone(userDetails *models.User, OTP string) (*model
 }
 
 func (uS *UserService) UpdateUser(userData *models.User) (*models.User, utils.CashTrackError) {
-	userData.UpdatedAt = time.Now()
 	return uS.UserRepo.Update(userData)
 }
