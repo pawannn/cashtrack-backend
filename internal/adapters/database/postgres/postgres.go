@@ -15,7 +15,6 @@ type PGService struct {
 
 func InitPGService(config *config.CashTrackCfg) (ports.DatabaseRepo, error) {
 	dbConnUri := fmt.Sprintf("dbname=%s host=%s port=%d user=%s password=%s sslmode=%s ", config.DBName, config.DBHost, config.DBPort, config.DBUser, config.DBPass, config.DBSsl)
-	fmt.Println(dbConnUri)
 	db, err := sql.Open("postgres", dbConnUri)
 	if err != nil {
 		return nil, err

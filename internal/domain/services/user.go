@@ -35,7 +35,7 @@ func (uS *UserService) VerifyPhone(userDetails *models.User, OTP string) (*model
 	if !ok {
 		return nil, utils.CashTrackError{
 			Code:    http.StatusUnauthorized,
-			Message: "Invalid OPT",
+			Message: "Invalid OTP",
 			Error:   nil,
 		}
 	}

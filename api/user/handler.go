@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,8 +21,6 @@ func (uA *UserApi) ValidatePhone(c *gin.Context) {
 
 	err := uA.userService.ValidatePhone(userDetails.Phone, userDetails.Country)
 	if err != utils.NoErr {
-		fmt.Println(err)
-		fmt.Println(utils.NoErr)
 		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
 		return
 	}
@@ -46,6 +43,7 @@ func (uA *UserApi) VerifyPhone(c *gin.Context) {
 		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
 		return
 	}
+
 	token, err := uA.cashtrackEngine.AuthRepo.GenerateUserToken(user.Id)
 	if err != utils.NoErr {
 		cashTrackHttp.SendResponse(c, reqID, err.Code, err.Message, err.Error)
