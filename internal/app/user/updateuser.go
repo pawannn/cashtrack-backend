@@ -13,5 +13,9 @@ func (uA *UserApp) Update(userDetails *models.User) (*models.User, utils.CashTra
 	if err != utils.NoErr {
 		return nil, err
 	}
+	err = uA.cacheRepo.StoreUserInfo(user)
+	if err != utils.NoErr {
+		return nil, err
+	}
 	return user, utils.NoErr
 }

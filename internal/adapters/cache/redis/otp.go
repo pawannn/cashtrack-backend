@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/pawannn/cashtrack/internal/utils"
+	"github.com/redis/go-redis/v9"
 )
 
 func (rS *RedisService) StoreOtpSentNumbers(phone string) utils.CashTrackError {
@@ -12,6 +13,9 @@ func (rS *RedisService) StoreOtpSentNumbers(phone string) utils.CashTrackError {
 	key := "otp_sent:" + phone
 
 	err := rS.rClient.Set(ctx, key, true, 3*time.Minute).Err()
+	if err == redis.Nil {
+		return utils.NoErr
+	}
 	if err != nil {
 		return utils.CashTrackError{
 			Code:    500,

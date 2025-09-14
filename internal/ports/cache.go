@@ -7,7 +7,7 @@ import (
 
 type CacheRepo interface {
 	GetUserInfo(userID string) (*models.User, utils.CashTrackError)
-	StoreUserInfo(userDetails models.User) utils.CashTrackError
+	StoreUserInfo(userDetails *models.User) utils.CashTrackError
 	GetCategories() ([]models.Category, utils.CashTrackError)
 	StoreCategories(categories []models.Category) utils.CashTrackError
 	StoreOtpSentNumbers(phone string) utils.CashTrackError

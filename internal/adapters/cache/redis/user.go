@@ -8,11 +8,15 @@ import (
 
 	"github.com/pawannn/cashtrack/internal/domain/models"
 	"github.com/pawannn/cashtrack/internal/utils"
+	"github.com/redis/go-redis/v9"
 )
 
 func (rS *RedisService) GetUserInfo(userID string) (*models.User, utils.CashTrackError) {
 	key := userID + ":cashTrack"
 	res, err := rS.rClient.Get(context.Background(), key).Result()
+	if err == redis.Nil {
+		return nil, utils.NoErr
+	}
 	if err != nil {
 		return nil, utils.CashTrackError{
 			Code:    http.StatusInternalServerError,
@@ -31,7 +35,7 @@ func (rS *RedisService) GetUserInfo(userID string) (*models.User, utils.CashTrac
 	return user, utils.NoErr
 }
 
-func (rS *RedisService) StoreUserInfo(userDetails models.User) utils.CashTrackError {
+func (rS *RedisService) StoreUserInfo(userDetails *models.User) utils.CashTrackError {
 	userID := userDetails.Id + ":cashTrack"
 	userByte, err := json.Marshal(userDetails)
 	if err != nil {
