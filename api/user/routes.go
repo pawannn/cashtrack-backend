@@ -12,7 +12,7 @@ type UserApi struct {
 	cashtrackEngine *http.CashTrackEngine
 	userLogger      *logger.Logger
 	userService     *services.UserService
-	Middlware       middlewares.MiddlewareService
+	middlware       middlewares.MiddlewareService
 }
 
 func InitUserApi(ctEngine *http.CashTrackEngine, userService *services.UserService) *UserApi {
@@ -22,7 +22,7 @@ func InitUserApi(ctEngine *http.CashTrackEngine, userService *services.UserServi
 		cashtrackEngine: ctEngine,
 		userLogger:      &_logger,
 		userService:     userService,
-		Middlware:       _middleware,
+		middlware:       _middleware,
 	}
 }
 
@@ -33,7 +33,7 @@ func (uA UserApi) AddRoutes() {
 			Path:    "/users",
 			Handler: uA.GetUser,
 			MiddleWares: []gin.HandlerFunc{
-				uA.Middlware.AuthUser,
+				uA.middlware.AuthUser,
 			},
 			Description: "This endpoint gets details of the user",
 		},
@@ -42,7 +42,7 @@ func (uA UserApi) AddRoutes() {
 			Path:    "/users",
 			Handler: uA.UpdateUser,
 			MiddleWares: []gin.HandlerFunc{
-				uA.Middlware.AuthUser,
+				uA.middlware.AuthUser,
 			},
 			Description: "This endpoint gets details of the user",
 		},
@@ -50,14 +50,14 @@ func (uA UserApi) AddRoutes() {
 			Method:      "POST",
 			Path:        "/users/validate/phone",
 			Handler:     uA.ValidatePhone,
-			MiddleWares: []gin.HandlerFunc{},
+			MiddleWares: nil,
 			Description: "This endpoint validates the phone and sends OTP",
 		},
 		{
 			Method:      "POST",
 			Path:        "/users/verify/phone",
 			Handler:     uA.VerifyPhone,
-			MiddleWares: []gin.HandlerFunc{},
+			MiddleWares: nil,
 			Description: "This enpoint validates the OTP and save user details",
 		},
 	})

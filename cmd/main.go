@@ -3,12 +3,14 @@ package main
 import (
 	"log"
 
+	"github.com/pawannn/cashtrack/api/categories"
 	"github.com/pawannn/cashtrack/api/user"
 	auth "github.com/pawannn/cashtrack/internal/adapters/auth/jwt"
 	cache "github.com/pawannn/cashtrack/internal/adapters/cache/redis"
 	database "github.com/pawannn/cashtrack/internal/adapters/database/postgres"
 	sms "github.com/pawannn/cashtrack/internal/adapters/sms/twillo"
-	useApp "github.com/pawannn/cashtrack/internal/app/user"
+	categoryApp "github.com/pawannn/cashtrack/internal/app/categories"
+	userApp "github.com/pawannn/cashtrack/internal/app/user"
 	"github.com/pawannn/cashtrack/internal/domain/services"
 	"github.com/pawannn/cashtrack/internal/pkg/config"
 	"github.com/pawannn/cashtrack/internal/pkg/http"
@@ -20,32 +22,31 @@ func main() {
 		log.Fatalf("Unable to load config, %s", err.Error())
 	}
 
-	// Initialize adaptors
-	// Initialize cache service
-	cacheRepo := cache.InitRedisService(cfg)
-
-	// Initialize SMS Service
-	smsRepo := sms.InitTwilloClient(cfg)
-
-	// Initialize Auth Service
-	authRepo := auth.InitJWTService(cfg)
-
-	// Initialize Database service
+	// Initialize Repositories
 	dbRepo, err := database.InitPGService(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
+	cacheRepo := cache.InitRedisService(cfg)
+	smsRepo := sms.InitTwilloClient(cfg)
+	authRepo := auth.InitJWTService(cfg)
+	userRepo := userApp.InitUserApp(dbRepo, cacheRepo, smsRepo)
+	categoryRepo := categoryApp.InitCategoriesApp(dbRepo, cacheRepo)
 
-	// Initialize HTTP Engine
+	// Initialize Services
+	userService := services.InitUserService(userRepo)
+	categoriesService := services.InitCategoriesService(categoryRepo)
+
+	// Initialize http engine
 	server := http.InitCashtrackEngine(cfg, authRepo)
 
-	// Initialize user Service and Api
-	userRepo := useApp.InitUserApp(dbRepo, cacheRepo, smsRepo)
-	userService := services.InitUserService(userRepo)
+	// Initialize Api Services
+	categoriesApi := categories.InitCategoriesApi(server, categoriesService)
 	userApi := user.InitUserApi(server, userService)
 
-	// Add User Reoutes to server
+	// Add Routes to server
 	userApi.AddRoutes()
+	categoriesApi.AddRoutes()
 
 	// Start the server
 	if err := server.StartServer(); err != nil {
