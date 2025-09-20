@@ -20,7 +20,7 @@ func InitNewTransactionRepo(txRepo ports.TransactionRepo) *TransactionService {
 
 func (tS *TransactionService) Record(tx models.Transaction) (*models.Transaction, utils.CashTrackError) {
 	tx.Id = utils.NewUUID()
-	tx.Created_at = time.Now()
+	tx.CreatedAt = time.Now()
 	tx.UpdatedAt = time.Now()
 	return tS.TxRepo.Record(tx)
 }
