@@ -1,4 +1,4 @@
-# CashTrack
+# CashTrack - V1
 
 ## 1. What is CashTrack?
 CashTrack is a personal finance tracking application designed to help users gain better control over their money.  
