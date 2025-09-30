@@ -7,7 +7,7 @@ type TransactionApp struct {
 	cacheRepo    ports.CacheRepo
 }
 
-func InitTransactionApp(dbRepo ports.DatabaseRepo, cacheRepo ports.CacheRepo, smsRepo ports.SMSRepo) ports.TransactionRepo {
+func InitTransactionApp(dbRepo ports.DatabaseRepo, cacheRepo ports.CacheRepo) ports.TransactionRepo {
 	return &TransactionApp{
 		databaseRepo: dbRepo,
 		cacheRepo:    cacheRepo,
