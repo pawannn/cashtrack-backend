@@ -16,7 +16,9 @@ The backend provides secure APIs for managing authentication, transactions, cate
 - **Language:** Go (Golang)
 - **Framework:** Gin (for REST APIs)
 - **Database:** PostgreSQL
-- **Architecture Style:** Clean Architecture + Layered (API → Service → Repository → Database)
+- **Architecture Style:** Hexagonal Architecture (Ports & Adapters)
+    - Core business logic (domain) is decoupled from external systems like the database, HTTP, or messaging.
+    - Allows swapping or modifying adapters without impacting the core logic.
 - **Other:** Follows 12-Factor App principles for scalability and maintainability.
 
 ## 3. Database Schema
