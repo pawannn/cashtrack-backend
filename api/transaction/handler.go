@@ -178,10 +178,10 @@ func (tA *TransactionApi) GetUserStats(c *gin.Context) {
 	endOfMonth := startOfMonth.AddDate(0, 1, -1).Add(23*time.Hour + 59*time.Minute + 59*time.Second)
 
 	if fromStr != "" {
-		parsedFrom, parseErr := time.Parse("2006-01-02", fromStr)
-		if parseErr != nil {
-			tA.transactionLogger.Error(reqID, "Invalid 'from' date format", parseErr, "input", fromStr)
-			cashTrackHttp.SendResponse(c, reqID, http.StatusBadRequest, "Invalid 'from' date format, use YYYY-MM-DD", parseErr.Error())
+		parsedFrom, err := time.Parse("2006-01-02", fromStr)
+		if err != nil {
+			tA.transactionLogger.Error(reqID, "Invalid 'from' date format", err, "input", fromStr)
+			cashTrackHttp.SendResponse(c, reqID, http.StatusBadRequest, "Invalid 'from' date format, use YYYY-MM-DD", err.Error())
 			return
 		}
 		from = &parsedFrom
@@ -190,10 +190,10 @@ func (tA *TransactionApi) GetUserStats(c *gin.Context) {
 	}
 
 	if toStr != "" {
-		parsedTo, parseErr := time.Parse("2006-01-02", toStr)
-		if parseErr != nil {
-			tA.transactionLogger.Error(reqID, "Invalid 'to' date format", parseErr, "input", toStr)
-			cashTrackHttp.SendResponse(c, reqID, http.StatusBadRequest, "Invalid 'to' date format, use YYYY-MM-DD", parseErr.Error())
+		parsedTo, err := time.Parse("2006-01-02", toStr)
+		if err != nil {
+			tA.transactionLogger.Error(reqID, "Invalid 'to' date format", err, "input", toStr)
+			cashTrackHttp.SendResponse(c, reqID, http.StatusBadRequest, "Invalid 'to' date format, use YYYY-MM-DD", err.Error())
 			return
 		}
 		to = &parsedTo

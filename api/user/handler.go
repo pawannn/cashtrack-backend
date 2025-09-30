@@ -59,7 +59,7 @@ func (uA *UserApi) VerifyPhone(c *gin.Context) {
 
 	if err := c.BindJSON(&payload); err != nil {
 		uA.userLogger.Error(reqID, "Failed to read payload for phone verification", err)
-		cashTrackHttp.SendResponse(c, reqID, http.StatusInternalServerError, "Unable to read payload", nil)
+		cashTrackHttp.SendResponse(c, reqID, http.StatusInternalServerError, "Unable to read payload", err.Error())
 		return
 	}
 
