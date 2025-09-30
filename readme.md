@@ -24,9 +24,7 @@ The backend provides secure APIs for managing authentication, transactions, cate
 ## 3. Database Schema
 The database schema for CashTrack V1 provides a structured overview of all entities, relationships, and constraints used in the backend. It is designed to efficiently track users, accounts, transactions, categories, and budgets.
 
-![CashTrack Database Schema](./docs/database/cashtrack-v1-schema.png)
-
-You can also explore an interactive version of the schema on dbdiagram: [View Database Diagram](https://dbdiagram.io/d/Cashtrack-v1-68c167bb61a46d388e658af5)
+You can explore the database diagram here: [View Database Diagram](https://dbdiagram.io/d/Cashtrack-v1-68c167bb61a46d388e658af5)
 
 ## 4. 12-Factor App Compliance
 
