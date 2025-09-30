@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"strconv"
 	"strings"
 	"time"
 
@@ -70,12 +71,13 @@ func (pS *PGService) FilterUserTransaction(userID string, from *time.Time, to *t
 	argPos := 2
 
 	if from != nil {
-		conditions = append(conditions, "date >= $"+string(rune(argPos)))
+		conditions = append(conditions, "date >= $"+strconv.Itoa(argPos))
 		args = append(args, *from)
 		argPos++
 	}
+
 	if to != nil {
-		conditions = append(conditions, "date <= $"+string(rune(argPos)))
+		conditions = append(conditions, "date <= $"+strconv.Itoa(argPos))
 		args = append(args, *to)
 		argPos++
 	}
@@ -217,12 +219,13 @@ func (pS *PGService) GetUserStats(userID string, from *time.Time, to *time.Time)
 	argPos := 2
 
 	if from != nil {
-		conditions = append(conditions, "t.date >= $"+string(rune(argPos)))
+		conditions = append(conditions, "t.date >= $"+strconv.Itoa(argPos))
 		args = append(args, *from)
 		argPos++
 	}
+
 	if to != nil {
-		conditions = append(conditions, "t.date <= $"+string(rune(argPos)))
+		conditions = append(conditions, "t.date <= $"+strconv.Itoa(argPos))
 		args = append(args, *to)
 		argPos++
 	}

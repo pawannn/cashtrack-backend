@@ -53,7 +53,6 @@ func main() {
 	userApi.AddRoutes()
 	categoriesApi.AddRoutes()
 	transactionApi.AddRoutes()
-	// transactionApi.
 
 	// Start the server
 	if err := server.StartServer(); err != nil {

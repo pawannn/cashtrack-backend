@@ -15,14 +15,14 @@ type TransactionApi struct {
 	middlware          middlewares.MiddlewareService
 }
 
-func InitTransactionApi(ctEngine *http.CashTrackEngine, transcationService *services.TransactionService) *TransactionApi {
-	_logger := logger.InitNewLogger("transcation-service")
+func InitTransactionApi(ctEngine *http.CashTrackEngine, transactionService *services.TransactionService) *TransactionApi {
+	_logger := logger.InitNewLogger("transaction-service")
 	_middleware := middlewares.InitMiddleWares(ctEngine.AuthRepo)
 
 	return &TransactionApi{
 		cashtrackEngine:    ctEngine,
 		transactionLogger:  &_logger,
-		transactionService: transcationService,
+		transactionService: transactionService,
 		middlware:          _middleware,
 	}
 }
@@ -31,7 +31,7 @@ func (tA TransactionApi) AddRoutes() {
 	tA.cashtrackEngine.AddV1Routes([]http.CashTrackRoutes{
 		{
 			Method:  "GET",
-			Path:    "/transactions",
+			Path:    "/transaction",
 			Handler: tA.GetUserTransactions,
 			MiddleWares: []gin.HandlerFunc{
 				tA.middlware.AuthUser,
@@ -40,7 +40,7 @@ func (tA TransactionApi) AddRoutes() {
 		},
 		{
 			Method:  "GET",
-			Path:    "/transactions/stats",
+			Path:    "/transaction/stats",
 			Handler: tA.GetUserStats,
 			MiddleWares: []gin.HandlerFunc{
 				tA.middlware.AuthUser,
@@ -49,7 +49,7 @@ func (tA TransactionApi) AddRoutes() {
 		},
 		{
 			Method:  "POST",
-			Path:    "/transactions",
+			Path:    "/transaction",
 			Handler: tA.RecordTransaction,
 			MiddleWares: []gin.HandlerFunc{
 				tA.middlware.AuthUser,
@@ -58,7 +58,7 @@ func (tA TransactionApi) AddRoutes() {
 		},
 		{
 			Method:  "PUT",
-			Path:    "/transactions",
+			Path:    "/transaction",
 			Handler: tA.UpdateTransaction,
 			MiddleWares: []gin.HandlerFunc{
 				tA.middlware.AuthUser,
@@ -72,7 +72,7 @@ func (tA TransactionApi) AddRoutes() {
 			MiddleWares: []gin.HandlerFunc{
 				tA.middlware.AuthUser,
 			},
-			Description: "This endpoint deleted transaction of a user",
+			Description: "This endpoint deletes transaction of a user",
 		},
 	})
 }
