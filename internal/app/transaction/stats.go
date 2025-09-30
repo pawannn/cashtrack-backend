@@ -8,5 +8,9 @@ import (
 )
 
 func (tA *TransactionApp) UserStats(userID string, from *time.Time, to *time.Time) ([]models.CategoryStat, utils.CashTrackError) {
-	return nil, utils.NoErr
+	stats, err := tA.databaseRepo.GetUserStats(userID, from, to)
+	if err != utils.NoErr {
+		return nil, err
+	}
+	return stats, utils.NoErr
 }

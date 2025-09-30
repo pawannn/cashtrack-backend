@@ -8,5 +8,9 @@ import (
 )
 
 func (tA *TransactionApp) FilterUserTransactions(userID string, from *time.Time, to *time.Time) ([]models.Transaction, utils.CashTrackError) {
-	return nil, utils.NoErr
+	tx, err := tA.databaseRepo.FilterUserTransaction(userID, from, to)
+	if err != utils.NoErr {
+		return nil, err
+	}
+	return tx, utils.NoErr
 }
