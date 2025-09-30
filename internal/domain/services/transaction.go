@@ -18,10 +18,7 @@ func InitNewTransactionRepo(txRepo ports.TransactionRepo) *TransactionService {
 	}
 }
 
-func (tS *TransactionService) Record(tx models.Transaction) (*models.Transaction, utils.CashTrackError) {
-	tx.Id = utils.NewUUID()
-	tx.Created_at = time.Now()
-	tx.UpdatedAt = time.Now()
+func (tS *TransactionService) Record(tx *models.Transaction) (*models.Transaction, utils.CashTrackError) {
 	return tS.TxRepo.Record(tx)
 }
 
@@ -38,6 +35,6 @@ func (tS *TransactionService) Update(tx *models.Transaction) (*models.Transactio
 	return tS.TxRepo.Update(tx)
 }
 
-func (tS *TransactionService) Delete(txID string) utils.CashTrackError {
-	return tS.TxRepo.Delete(txID)
+func (tS *TransactionService) Delete(tx *models.Transaction) utils.CashTrackError {
+	return tS.TxRepo.Delete(tx)
 }

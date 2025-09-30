@@ -15,7 +15,7 @@ type CategoriesApi struct {
 }
 
 func InitCategoriesApi(ctEngine *http.CashTrackEngine, categoriesService *services.CategoriesService) *CategoriesApi {
-	_logger := logger.InitNewLogger("user-service")
+	_logger := logger.InitNewLogger("category-service")
 	_middleware := middlewares.InitMiddleWares(ctEngine.AuthRepo)
 
 	return &CategoriesApi{

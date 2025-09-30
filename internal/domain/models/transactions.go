@@ -10,7 +10,7 @@ type Transaction struct {
 	PaymentMethod string    `json:"payment_method"`
 	Date          time.Time `json:"date"`
 	Note          string    `json:"note"`
-	Created_at    time.Time `json:"created_at"`
+	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 }
 
